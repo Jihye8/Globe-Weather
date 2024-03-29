@@ -1,84 +1,53 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ReactMapGL, {NavigationControl, GeolocateControl, Marker, ScaleControl} from 'react-map-gl';
 import "mapbox-gl/dist/mapbox-gl.css"
-// import '@mapbox/react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import { change } from './store/coordinateReducer';
+import SearchComponent from './components/SearchComponent';
 
-
-const mapToken = process.env.REACT_APP_MAPBOX_TOKEN;
+const mapToken = process.env.REACT_APP_MAPBOX_TOKEN; //map api
 
 function Globe() {
-  const [clickInfo, setClickInfo] = useState(null); //마커 위치 담은 객체
+  const dispatch = useDispatch();
+  const longitude = useSelector((state)=>state.coordinate.longitude);
+  const latitude = useSelector((state)=>state.coordinate.latitude);
   
-  const [viewport, setViewport] = useState({
-    latitude:37.8,
-    longitude : -122.4,
+  //마커 위치 담은 객체
+  const [clickInfo, setClickInfo] = useState(null); 
+  // 초기 지구본 설정
+  const [viewport, setViewport] = useState({  
+    longitude :longitude,
+    latitude:latitude,
     zoom : 2,
     projection : 'globe',
   });
   
-  function handleMapClick(event){
+  function HandleMapClick(event){
     const { lng, lat } = event.lngLat;
-    setClickInfo({ lng: lng, lat: lat });
+    setClickInfo({ lng: lng, lat: lat }); // 지도 상에 누른 위치
+    dispatch(change(event.lngLat));
   };
-  //검색창에 입력시 
-  const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [selectedResult, setSelectedResult] = useState(null);
 
-  const handleSearch = () => {
-    // Mapbox API 호출 및 검색 결과 받아오기
-    fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${searchText}.json?limit=5&access_token=${mapToken}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.features && data.features.length > 0) {
-          // 검색 결과 저장
-          setSearchResults(data.features);
-        } else {
-          alert('검색 결과를 찾을 수 없습니다.');
-        }
+  //좌표로 도시정보 가져오기 api
+  const coordinateSearch = (lngLat) =>{
+    console.log(lngLat);
+    const longitude = lngLat.lng
+    const latitude = lngLat.lat
+    fetch(`https://api.mapbox.com/search/geocode/v6/reverse?longitude=${longitude}&latitude=${latitude}.json&access_token=${mapToken}`)
+      .then(response =>response.json())
+      .then(data=>{
+        console.log(data.features[0].properties.place_formatted); //도시명 
       })
       .catch(error => {
         console.error('검색 중 오류 발생:', error);
         alert('검색 중 오류가 발생했습니다.');
       });
-  };
-  const handleSelectResult = (result) => {
-    setSelectedResult(result);
 
-    // 마커 정보 설정
-    const [longitude, latitude] = result.center;
-    setViewport({
-      ...viewport,
-      latitude,
-      longitude,
-      zoom: 5
-    });
-  };
-  //좌표로 정보 가져오기
-  // https://api.mapbox.com/search/geocode/v6/reverse?longitude={longitude}&latitude={latitude}
+  }
 
-  
   return (
+    // 검색
     <div style={{width:"80vw", height:"100vh"}}>
-      <div className='search-wrap'>
-        <input
-          type="text"
-          value={searchText}
-          onChange={e => setSearchText(e.target.value)}
-          placeholder="장소를 검색하세요"
-        />
-        <button onClick={handleSearch}>검색</button>
-        <div>
-          <h2>검색 결과:</h2>
-          <ul>
-            {searchResults.map(result => (
-              <li key={result.id} onClick={() => handleSelectResult(result)}>
-                {result.place_name}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
       <ReactMapGL
         mapboxAccessToken= {mapToken}
         {...viewport}
@@ -87,15 +56,14 @@ function Globe() {
         mapStyle="mapbox://styles/jihye829/clu6f3a3r001u01r62zdmfe88"
         transitionDuration={200}
         onMove={evt => setViewport(evt.viewport)}
-        onClick={handleMapClick}
+        onClick={HandleMapClick}
       >
         <NavigationControl />     
         <GeolocateControl /> 
         <ScaleControl />
-        {clickInfo?(<Marker longitude={clickInfo.lng} latitude={clickInfo.lat} offsetTop={5} anchor="center" color='#F99417' onClick={(e)=>console.log(e.target.getLngLat())}></Marker>) :null }
-
+        {clickInfo?(<Marker longitude={clickInfo.lng} latitude={clickInfo.lat} offsetTop={5} anchor="center" color='#F99417' onClick={(e)=>{coordinateSearch(e.target.getLngLat())}}></Marker>) :null }
       </ReactMapGL>
-   
+      <SearchComponent />
     </div>
   );
 }
