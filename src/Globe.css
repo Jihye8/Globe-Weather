@@ -1,0 +1,10 @@
+.mapboxgl-ctrl-bottom-right {
+  display: none;
+}
+a.mapboxgl-ctrl-logo {
+  display: none;
+}
+
+.mapboxgl-popup-content {
+  padding: 20px;
+}
