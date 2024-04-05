@@ -17,7 +17,7 @@ const coordinateReducer = (state = initalState, action) => {
                 ...state,
                 longitude : action.lngLat.lng,
                 latitude : action.lngLat.lat
-            }   
+            }
         default:
             return state;
     }
