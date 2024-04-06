@@ -1,17 +1,16 @@
-import './App.css';
 import Globe from './Globe';
 import SearchComponent from './components/SearchComponent';
 import Header from './components/Header';
-import WeatherComponent from './components/WeatherComponent';
+
+import './App.css';
 
 function App() {
   return (
     <div className="App">
       <Header />
       <main>
-        <SearchComponent />
         <Globe />
-        <WeatherComponent />
+        <SearchComponent />
       </main>
       <footer></footer>
     </div>

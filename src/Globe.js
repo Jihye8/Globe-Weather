@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffec, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ReactMapGL, {
   NavigationControl,
@@ -9,6 +9,7 @@ import ReactMapGL, {
 } from 'react-map-gl';
 import { change } from './store/coordinateReducer';
 import { save } from './store/placeNameReducer';
+import Modal from './components/Modal';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './Globe.css';
@@ -26,11 +27,12 @@ function Globe() {
   //popup 창 열고 닫기
   const [showPopup, setShowPopup] = useState(false);
   const [placeName, setPlaceName] = useState('');
-  //날씨
+  //모달창
+  const [modal, setModal] = useState(false);
   // 초기 지구본 설정
   const [viewport, setViewport] = useState({
-    longitude: longitude,
-    latitude: latitude,
+    longitude: 127,
+    latitude: 37,
     zoom: 2,
     projection: 'globe',
   });
@@ -87,20 +89,25 @@ function Globe() {
     }
   };
 
+  //모달창 외에 클릭하면 닫히게 하자!
+  const removeModal = (e) => {
+    return setModal(false);
+  };
+
   return (
     <div className="wrap">
-      <div style={{ width: '80vw', height: '100vh' }}>
+      <div className="globe" style={{ width: '100vw', height: '100vh' }}>
         <ReactMapGL
           mapboxAccessToken={mapToken}
           {...viewport}
           width="100%"
           height="100%"
-          mapStyle="mapbox://styles/jihye829/clugaidf500lt01ra1me3ea6y"
+          mapStyle="mapbox://styles/jihye829/clum83uju00wl01raemtk6mtb"
           transitionDuration={200}
           onMove={handleMove}
           onClick={HandleMapClick}
         >
-          {clickInfo && (
+          {clickInfo && clickInfo.lng !== null && clickInfo.lat !== null && (
             <Marker
               longitude={clickInfo.lng}
               latitude={clickInfo.lat}
@@ -119,11 +126,25 @@ function Globe() {
             >
               {placeName}
               <br />
-              <button>날씨</button>
+              <button
+                onClick={() => {
+                  setModal(true);
+                }}
+              >
+                날씨
+              </button>
             </Popup>
           )}
         </ReactMapGL>
       </div>
+
+      {modal ? (
+        <div className="modal-background" onClick={removeModal}>
+          <div>
+            <Modal />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

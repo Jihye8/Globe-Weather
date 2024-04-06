@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import WeatherComponent from './WeatherComponent';
+import '../css/Modal.css';
 
 export default function Modal() {
   return (
-    <div>
-      <h3>모달창</h3>
+    <div className="modal-wrap">
+      <WeatherComponent />
     </div>
-  )
+  );
 }
