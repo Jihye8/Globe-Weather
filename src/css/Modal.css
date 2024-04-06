@@ -1,0 +1,10 @@
+.modal-wrap {
+  width: 60vw;
+  height: 60vh;
+  background-color: rgba(128, 128, 128, 0.8);
+  position: absolute;
+  z-index: 15;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
