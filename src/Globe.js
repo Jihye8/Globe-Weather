@@ -129,6 +129,7 @@ function Globe() {
               <button
                 onClick={() => {
                   setModal(true);
+                  setShowPopup(false);
                 }}
               >
                 날씨

@@ -1,6 +1,6 @@
 .modal-wrap {
   width: 60vw;
-  height: 60vh;
+  height: fit-content;
   background-color: rgba(128, 128, 128, 0.8);
   position: absolute;
   z-index: 15;
