@@ -16,7 +16,11 @@ import {
   Legend,
   Interaction,
   Scale,
+  Ticks,
 } from 'chart.js';
+
+import '../css/weatherComponent.css';
+import logo from '../img/logo.png';
 
 ChartJS.register(
   CategoryScale,
@@ -123,10 +127,28 @@ export default function WeatherComponent() {
       x: {
         grid: {
           display: false,
+          color: 'wthie',
+        },
+        ticks: {
+          color: 'white',
+          // fontSize: 14,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: 'white',
         },
       },
     },
     plugins: false,
+    elements: {
+      point: {
+        radius: 0,
+      },
+    },
   };
 
   const data = {
@@ -135,26 +157,33 @@ export default function WeatherComponent() {
       {
         label: 'Temperature',
         data: tempByHour,
-        backgroundColor: '#0CD3FF',
-        borderColor: '#0CD3FF',
+        // backgroundColor: '#0CD3FF',
+        borderColor: '#F99417',
+        borderWidth: 2,
       },
     ],
   };
-  console.log(tempByHour);
   return (
     <div>
       {background && (
-        <>
+        <div className="weather-wrap">
           <video autoPlay loop muted width="100%" height="100%">
             <source src={background} type="video/mp4" />
           </video>
-          <span className="name">{name}</span>
-          {tempByHour.length > 0 ? (
-            <div>
-              <Line options={options} data={data} />
-            </div>
-          ) : null}
-        </>
+          <div className="content-wrap">
+            {name && (
+              <span className="name-wrap">
+                <img src={logo}></img>
+                <span className="name">{name}</span>
+              </span>
+            )}
+            {tempByHour.length > 0 ? (
+              <div className="table-wrap">
+                <Line options={options} data={data} />
+              </div>
+            ) : null}
+          </div>
+        </div>
       )}
     </div>
   );

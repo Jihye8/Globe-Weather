@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { change } from '../store/coordinateReducer';
 
-import '../css/SearchComponent.css';
+import '../css/searchComponent.css';
 import searchIcon from '../img/search.png';
 import closeIcon from '../img/close.png';
 

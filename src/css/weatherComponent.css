@@ -1,0 +1,53 @@
+.weather-wrap {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 1%;
+  border-radius: 8px;
+  /* position: relative; */
+  /* z-index: 13; */
+}
+.weather-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+.weather-wrap .name-wrap {
+  position: absolute;
+  top: 10%;
+  left: 8%;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.weather-wrap img {
+  width: 5%;
+  height: 5%;
+}
+.weather-wrap .name {
+  color: white;
+  font-size: 2rem;
+  text-shadow: 2px 2px 0px block;
+  cursor: default;
+}
+.table-wrap {
+  position: absolute;
+  top: 30%;
+  left: 8%;
+  padding: 1%;
+  background-color: rgba(128, 128, 128, 0.2);
+  border-radius: 8px;
+  /* width: 100%;
+    height: 30%;
+    position: absolute;
+    top: 0%;
+    left: 0%;*/
+}
+.table-wrap canvas {
+  height: 32vh;
+}
