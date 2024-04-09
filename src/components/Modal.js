@@ -1,6 +1,6 @@
 import React from 'react';
 import WeatherComponent from './WeatherComponent';
-import '../css/Modal.css';
+import '../css/modal.css';
 
 export default function Modal() {
   return (
