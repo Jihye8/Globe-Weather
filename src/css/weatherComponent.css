@@ -4,8 +4,6 @@
   margin: 0;
   padding: 1%;
   border-radius: 8px;
-  /* position: relative; */
-  /* z-index: 13; */
 }
 .weather-wrap video {
   width: 100%;
@@ -18,36 +16,78 @@
 }
 .weather-wrap .name-wrap {
   position: absolute;
-  top: 10%;
+  top: 8%;
   left: 8%;
   text-align: left;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-end;
 }
 .weather-wrap img {
-  width: 5%;
-  height: 5%;
+  width: 4%;
+  height: 4%;
 }
 .weather-wrap .name {
   color: white;
-  font-size: 2rem;
+  font-size: 1rem;
   text-shadow: 2px 2px 0px block;
   cursor: default;
+  margin-bottom: 1%;
 }
 .table-wrap {
   position: absolute;
-  top: 30%;
+  bottom: 10%;
   left: 8%;
   padding: 1%;
   background-color: rgba(128, 128, 128, 0.2);
   border-radius: 8px;
-  /* width: 100%;
-    height: 30%;
-    position: absolute;
-    top: 0%;
-    left: 0%;*/
 }
 .table-wrap canvas {
-  height: 32vh;
+  width: 33vw;
+  height: 23vh;
+}
+.date-wrap {
+  position: absolute;
+  right: 8%;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 400;
+}
+.main-weather-wrap {
+  position: absolute;
+  top: 17%;
+  left: 9%;
+  color: #f99417;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin: 1%;
+}
+.main-weather {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+.min-max-wrap {
+  position: absolute;
+  top: 19%;
+  left: 24%;
+  color: white;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.detail-info-weather {
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  color: white;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* margin: 2%; */
+}
+.detail-info-weather span {
+  margin-top: 2%;
 }

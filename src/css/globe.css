@@ -33,5 +33,15 @@ p .material-symbols-outlined {
   right: 10%;
   font-size: 2rem;
 }
-p .material-symbols-outlined:hover {
+p .material-symbols-outlined {
+  cursor: pointer;
+}
+.mapboxgl-marker {
+  cursor: pointer;
+}
+.search-wrap {
+  z-index: 6;
+  position: absolute;
+  top: 5%;
+  left: 5%;
 }

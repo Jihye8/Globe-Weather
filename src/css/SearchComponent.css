@@ -1,3 +1,10 @@
+/* .search-wrap {
+  z-index: 2;
+  position: absolute;
+  top: 90px;
+  right: 10px; */
+/* } */
+
 ul {
   list-style-type: none;
 }

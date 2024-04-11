@@ -44,8 +44,14 @@ export default function WeatherComponent() {
   const [name, setName] = useState(''); //(날씨 검색 기준)지명
   const [temp, setTemp] = useState(); //현재 온도
   const [tempByHour, setTempByHour] = useState([]); //오늘 시간대별 기온(3시간)
-  const [forecast, setForecast] = useState([]); // 4일
   const [date, setDate] = useState([]); //오늘 날짜
+  const [feelsLike, setFeelsLike] = useState(); // 체감온도
+  const [tempMin, setTempMin] = useState(); // 최저기온
+  const [tempMax, setTempMax] = useState(); // 최고기온
+  const [visibility, setVisibility] = useState(); // 시야
+  const [windSpeed, setWindSpeed] = useState(); //풍속
+  const [forecast, setForecast] = useState([]); // 4일 예보
+  const [forecastDate, setForecastDate] = useState([]); // 4일 예보-날짜
   useEffect(() => {
     //오늘 날씨
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${weatherToken}&units=metric
@@ -56,6 +62,9 @@ export default function WeatherComponent() {
           setMainWeather(`${data.weather[0].main}`); // 오늘의 메인 날씨
           setName(`${data.name}`); //날씨 기준-장소 이름
           setTemp(data.main.temp); //현재 날씨
+          setFeelsLike(data.main.feels_like); //체감기온
+          setVisibility(data.visibility); // 사야
+          setWindSpeed(data.wind.speed); //풍속
         } else {
           alert('날씨를 검색할 수 없는 곳입니다.');
         }
@@ -70,12 +79,22 @@ export default function WeatherComponent() {
     )
       .then((response) => response.json())
       .then((data) => {
+        // console.log(data);
         if (data) {
+          //오늘 날씨
           const temperatures = [];
           for (let i = 0; i < 8; i++) {
             temperatures.push(data.list[i].main.temp);
           }
+          // 새로운 배열을 저장할 변수 선언
+          const subArrays = [];
+          for (let i = 7; i < 40; i += 8) {
+            subArrays.push(data.list.slice(i, i + 8));
+          }
+          setForecast(subArrays); //4일간 일기예보
           setTempByHour(temperatures); //3시간별 기온
+          setTempMax(Math.max.apply(null, temperatures)); //최고기온
+          setTempMin(Math.min.apply(null, temperatures)); //최저기온
           setDate([
             ...date,
             data.list[0].dt_txt.substr(0, 4),
@@ -87,8 +106,8 @@ export default function WeatherComponent() {
         }
       })
       .catch((error) => {
-        alert('Error 발생');
-        console.log('error', error);
+        // alert('Error 발생');
+        // console.log('error', error);
       });
   }, [longitude, latitude]);
   //메인 날씨 별 모달 배경 영상 변경
@@ -120,6 +139,8 @@ export default function WeatherComponent() {
   const labels = ['03', '06', '09', '12', '15', '18', '21', '24'];
   const options = {
     responsive: true,
+    maintainAspectRatio: false, // 가로세로 비율을 유지하지 않음
+    aspectRatio: 5,
     interaction: {
       intersect: false,
     },
@@ -143,7 +164,21 @@ export default function WeatherComponent() {
         },
       },
     },
-    plugins: false,
+    plugins: {
+      tooltip: {
+        enabled: true,
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+          label: function (context) {
+            return context.parsed.y.toFixed(1) + '°C'; // 선 위의 온도만 표시
+          },
+        },
+      },
+      legend: {
+        display: false,
+      },
+    },
     elements: {
       point: {
         radius: 0,
@@ -163,6 +198,17 @@ export default function WeatherComponent() {
       },
     ],
   };
+  // //4일간의 일기예보
+  // const makeForecast = () => {
+  //   for (let i = 0; i < 4; i++) {
+  //     // console.log(forecast[i][0].dt_txt);
+
+  //     for (let j = 0; j < 8; j++) {
+  //       console.log(forecast[i][j].main.temp);
+  //     }
+  //   }
+  // };
+  // makeForecast();
   return (
     <div>
       {background && (
@@ -178,9 +224,31 @@ export default function WeatherComponent() {
               </span>
             )}
             {tempByHour.length > 0 ? (
-              <div className="table-wrap">
-                <Line options={options} data={data} />
-              </div>
+              <>
+                <div className="table-wrap">
+                  <Line options={options} data={data} />
+                </div>
+                <div className="date-wrap">
+                  Date. {date[0]} {date[1]} {date[2]}
+                </div>
+                <div className="main-weather-wrap">
+                  <div className="main-weather">{temp.toFixed(1)}°C</div>
+                </div>
+                <div className="min-max-wrap">
+                  <span>H : {tempMax.toFixed(1)}°C</span>
+                  <span>L : {tempMin.toFixed(1)}°C</span>
+                </div>
+                <div className="detail-info-weather">
+                  <span className="detail-info-weather1">
+                    <span>Feels like : {feelsLike.toFixed(1)}°C | </span>
+                    <span> Main weather : {mainWeather}</span>
+                  </span>
+                  <span className="detail-info-weather2">
+                    <span>Visibility : {visibility / 1000}km | </span>
+                    <span> Wind speed : {windSpeed}m/s</span>
+                  </span>
+                </div>
+              </>
             ) : null}
           </div>
         </div>

@@ -10,6 +10,7 @@ import ReactMapGL, {
 import { change } from '../store/coordinateReducer';
 import { save } from '../store/placeNameReducer';
 import Modal from './Modal';
+import SearchComponent from './SearchComponent';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '../css/globe.css';
@@ -112,6 +113,7 @@ function Globe({ srollToStart }) {
           onMove={handleMove}
           onClick={HandleMapClick}
         >
+          <SearchComponent />
           {clickInfo && clickInfo.lng !== null && clickInfo.lat !== null && (
             <Marker
               longitude={clickInfo.lng}

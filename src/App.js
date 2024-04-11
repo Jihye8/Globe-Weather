@@ -42,7 +42,6 @@ function App() {
         <div ref={componentGlobeRef}>
           <Globe srollToStart={scrollToStart} />
         </div>
-        {/* <SearchComponent /> */}
       </main>
     </div>
   );
