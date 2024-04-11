@@ -12,12 +12,12 @@
   z-index: 1;
   position: relative;
 }
-.search-wrap {
+/* .search-wrap {
   z-index: 2;
   position: absolute;
   top: 90px;
   right: 10px;
-}
+} */
 
 .App::-webkit-scrollbar {
   width: 10px; /* 세로축 스크롤바 길이 */
