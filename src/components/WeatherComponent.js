@@ -261,11 +261,13 @@ export default function WeatherComponent() {
                 </div>
                 <div className="detail-info-weather">
                   <span className="detail-info-weather1">
-                    <span>Feels like : {feelsLike.toFixed(1)} °C | </span>
+                    <span>Feels like : {feelsLike.toFixed(1)} °C</span>
+                    <span className="divide"> | </span>
                     <span> Main weather : {mainWeather}</span>
                   </span>
                   <span className="detail-info-weather2">
-                    <span>Visibility : {visibility / 1000}km | </span>
+                    <span>Visibility : {visibility / 1000}km</span>
+                    <span className="divide"> | </span>
                     <span> Wind speed : {windSpeed}m/s</span>
                   </span>
                 </div>
