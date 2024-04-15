@@ -52,6 +52,10 @@ export default function WeatherComponent() {
   const [windSpeed, setWindSpeed] = useState(); //풍속
   const [forecast, setForecast] = useState([]); // 4일 예보
   const [forecastDate, setForecastDate] = useState([]); // 4일 예보-날짜
+  const [forecastMaxTemp, setForecastMaxTemp] = useState([]); // 4일 예보-최고기온
+  const [forecastMinTemp, setForecastMinTemp] = useState([]); //4일 예보-최저기온
+  const [forecastMain, setForecastMain] = useState([]); //4일 예보 - 메인날씨
+  // const [forecastReady, setForecastReady] = useState(false); //4일 예보 - 준비상태
   useEffect(() => {
     //오늘 날씨
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${weatherToken}&units=metric
@@ -79,19 +83,43 @@ export default function WeatherComponent() {
     )
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         if (data) {
           //오늘 날씨
           const temperatures = [];
           for (let i = 0; i < 8; i++) {
             temperatures.push(data.list[i].main.temp);
           }
-          // 새로운 배열을 저장할 변수 선언
+          // 예보
           const subArrays = [];
-          for (let i = 7; i < 40; i += 8) {
+          for (let i = 7; i < 39; i += 8) {
             subArrays.push(data.list.slice(i, i + 8));
           }
-          setForecast(subArrays); //4일간 일기예보
+          console.log(subArrays);
+          if (subArrays.length == 4) {
+            const date = [];
+            const forecastMax = [];
+            const forecastMin = [];
+            const main = [];
+            for (let i = 0; i < 4; i++) {
+              let temp = [];
+              for (let j = 0; j < 8; j++) {
+                temp.push(subArrays[i][j].main.temp);
+              }
+              const max = Math.max.apply(null, temp);
+              const min = Math.min.apply(null, temp);
+              forecastMax.push(max); //최고기온
+              forecastMin.push(min); //최저기온
+              main.push(subArrays[i][4].weather[0].main); //메인날씨
+              date.push(`${subArrays[i][0].dt_txt.substr(8, 2)}`); //날짜
+              temp = [];
+            }
+            setForecastDate(date); // 4일 예보 - 날짜
+            setForecastMaxTemp(forecastMax); //4일 예보 - 최고기온
+            setForecastMinTemp(forecastMin); //4일 예보 - 최저기온
+            setForecastMain(main); //4일 예보- 메인날씨
+            console.log(date, forecastMax);
+          }
+
           setTempByHour(temperatures); //3시간별 기온
           setTempMax(Math.max.apply(null, temperatures)); //최고기온
           setTempMin(Math.min.apply(null, temperatures)); //최저기온
@@ -110,6 +138,7 @@ export default function WeatherComponent() {
         // console.log('error', error);
       });
   }, [longitude, latitude]);
+
   //메인 날씨 별 모달 배경 영상 변경
   useEffect(() => {
     let videoFile = null;
@@ -192,23 +221,12 @@ export default function WeatherComponent() {
       {
         label: 'Temperature',
         data: tempByHour,
-        // backgroundColor: '#0CD3FF',
         borderColor: '#F99417',
         borderWidth: 2,
       },
     ],
   };
-  // //4일간의 일기예보
-  // const makeForecast = () => {
-  //   for (let i = 0; i < 4; i++) {
-  //     // console.log(forecast[i][0].dt_txt);
 
-  //     for (let j = 0; j < 8; j++) {
-  //       console.log(forecast[i][j].main.temp);
-  //     }
-  //   }
-  // };
-  // makeForecast();
   return (
     <div>
       {background && (
@@ -232,21 +250,42 @@ export default function WeatherComponent() {
                   Date. {date[0]} {date[1]} {date[2]}
                 </div>
                 <div className="main-weather-wrap">
-                  <div className="main-weather">{temp.toFixed(1)}°C</div>
+                  <div className="main-weather">
+                    {temp.toFixed(1)}
+                    <span>°C</span>
+                  </div>
                 </div>
                 <div className="min-max-wrap">
-                  <span>H : {tempMax.toFixed(1)}°C</span>
-                  <span>L : {tempMin.toFixed(1)}°C</span>
+                  <span>H : {tempMax.toFixed(1)} °C</span>
+                  <span>L : {tempMin.toFixed(1)} °C</span>
                 </div>
                 <div className="detail-info-weather">
                   <span className="detail-info-weather1">
-                    <span>Feels like : {feelsLike.toFixed(1)}°C | </span>
+                    <span>Feels like : {feelsLike.toFixed(1)} °C | </span>
                     <span> Main weather : {mainWeather}</span>
                   </span>
                   <span className="detail-info-weather2">
                     <span>Visibility : {visibility / 1000}km | </span>
                     <span> Wind speed : {windSpeed}m/s</span>
                   </span>
+                </div>
+                <div className="forecast-wrap">
+                  {[0, 1, 2, 3].map((index) => (
+                    <div key={index} className="forecast-block">
+                      <span className="forecast-date">
+                        <span>{forecastDate[index]}</span>
+                      </span>
+                      <span className="forecast-info">
+                        <span> {forecastMain[index]}</span>
+                        <br />
+                        <span>
+                          H : {forecastMaxTemp[index].toFixed(1)} °C |{' '}
+                        </span>
+                        <span>L : {forecastMinTemp[index].toFixed(1)} °C</span>
+                      </span>
+                      <br />
+                    </div>
+                  ))}
                 </div>
               </>
             ) : null}

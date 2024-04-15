@@ -134,12 +134,13 @@ function Globe({ srollToStart }) {
               {placeName}
               <br />
               <button
+                className="popup-button"
                 onClick={() => {
                   setModal(true);
                   setShowPopup(false);
                 }}
               >
-                날씨
+                Weather
               </button>
             </Popup>
           )}
