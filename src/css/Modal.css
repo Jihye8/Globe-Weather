@@ -9,3 +9,13 @@
   transform: translate(-50%, -50%);
   padding: 0;
 }
+
+@media screen and (max-width: 1024px) {
+  .modal-wrap {
+    height: 50%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  /* 모바일 */
+}
