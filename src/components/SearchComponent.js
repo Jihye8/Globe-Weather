@@ -33,7 +33,6 @@ export default function SearchComponent() {
         if (data.features && data.features.length > 0) {
           // 검색 결과 저장
           setSearchResults(data.features);
-          console.log(data);
         } else {
           alert('날씨를 검색할 수 없는 곳입니다.');
         }

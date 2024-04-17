@@ -75,7 +75,6 @@ export default function WeatherComponent() {
       })
       .catch((error) => {
         alert('Error 발생');
-        console.log('error', error);
       });
     //5일간 날씨 예보(당일 오전 6시부터 5일 후 24시까지)
     fetch(
@@ -94,7 +93,6 @@ export default function WeatherComponent() {
           for (let i = 7; i < 39; i += 8) {
             subArrays.push(data.list.slice(i, i + 8));
           }
-          console.log(subArrays);
           if (subArrays.length == 4) {
             const date = [];
             const forecastMax = [];
@@ -117,7 +115,6 @@ export default function WeatherComponent() {
             setForecastMaxTemp(forecastMax); //4일 예보 - 최고기온
             setForecastMinTemp(forecastMin); //4일 예보 - 최저기온
             setForecastMain(main); //4일 예보- 메인날씨
-            console.log(date, forecastMax);
           }
 
           setTempByHour(temperatures); //3시간별 기온
@@ -133,10 +130,7 @@ export default function WeatherComponent() {
           alert('날씨 정보를 불러오지 못했습니다.');
         }
       })
-      .catch((error) => {
-        // alert('Error 발생');
-        // console.log('error', error);
-      });
+      .catch((error) => {});
   }, [longitude, latitude]);
 
   //메인 날씨 별 모달 배경 영상 변경
@@ -165,7 +159,7 @@ export default function WeatherComponent() {
   }, [mainWeather]);
 
   //시간별 기온 변화 차트
-  const labels = ['03', '06', '09', '12', '15', '18', '21', '24'];
+
   const options = {
     responsive: true,
     maintainAspectRatio: false, // 가로세로 비율을 유지하지 않음
