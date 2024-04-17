@@ -1,38 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+  font-family: 'Raleway';
+  font-optical-sizing: auto;
+  font-style: normal;
+}
 .App {
   text-align: center;
+  overflow: hidden;
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
+}
+.App:-webkit-scrollbar {
+  display: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.wrap {
+  z-index: 1;
+  position: relative;
+}
+/* .search-wrap {
+  z-index: 2;
+  position: absolute;
+  top: 90px;
+  right: 10px;
+} */
+
+.App::-webkit-scrollbar {
+  width: 10px; /* 세로축 스크롤바 길이 */
+  height: 20px; /* 가로축 스크롤바 길이 */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App::-webkit-scrollbar-track {
+  background-color: white; /*스크롤 바 배경 색상*/
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #6667ab; /*스크롤 바 색상*/
 }
