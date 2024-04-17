@@ -159,7 +159,7 @@ export default function WeatherComponent() {
   }, [mainWeather]);
 
   //시간별 기온 변화 차트
-
+  const labels = ['03', '06', '09', '12', '15', '18', '21', '24'];
   const options = {
     responsive: true,
     maintainAspectRatio: false, // 가로세로 비율을 유지하지 않음
